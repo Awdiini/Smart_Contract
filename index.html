@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <title>Register information at Blockchain</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4/web3.min.js" integrity="sha512-oMd9Re3VgJcXuZJn9DN6X7S7JUc7xLYZ2UyZ85Mm/xzaW3lwBr4fV2zjuu/n5jY/Of/2JOx35CTa6zvQNxb31Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+    <!-- <script src="node_modules/web3/web3.min.js"></script> -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7-rc.0/web3.min.js"></script>
+    <script src="./index.js"></script>
+
+
+  </head>
+
+  <body class="container">
+
+    <h1 class="page-header">Register information at Blockchain</h1>
+
+    <!-- <div class="row">
+      <div>
+        <h3 class="sub-header">Set information</h3>
+        <form class="form-inline" role="form">
+          <div class="form-group">
+            <table>
+              <tr>
+                <td><label for="newInfo">Info:</label> </td>
+                <td>
+                  <input class="form-control" id="newInfo">
+                </td>
+              </tr>
+            </table>
+          </div>
+          <a href="#" onclick="registerSetInfo()" class="btn btn-primary">Set</a>
+        </form>
+      </div>
+    </div> -->
+
+    <div class="row">
+    
+      
+      <div class="col-4">
+        <div class="mb-3">
+        
+          <button type="submit" onclick="connectMetamask()" class="btn btn-primary mb-3">Connect to metamask </button>
+          <p id="accountArea">Connection Status: NOT CONNECTED to Metamask </p>
+        </div>
+
+      </div>
+      <div class="col-4">
+        <div class="mb-3">
+        
+          <button type="submit" onclick="connectContract()" class="btn btn-primary mb-3">Connect to Contract</button>
+          <p id="contractArea">Connection Status: NOT CONNECTED to Smart Contract</p>
+        </div>
+
+      </div>
+    
+      <div class="col-4">
+        <div class="mb-3">
+        
+          <button type="submit" onclick="readWord()" class="btn btn-primary mb-3">Connect to Contract</button>
+          <p id="dataArea">Data Status: NO Data from Smart Contract </p>
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+    <div class="row">
+      <div class="col-6">
+        <div class="mb-3">
+          <label for="exampleFormControlTextarea1" class="form-label">Contract Name</label>
+          <input type="text" class="form-control" id="Contractname" placeholder="Enter Name">
+        </div>
+      </div>
+      
+      <div class="col-6">
+        <div class="mb-3">
+          <label for="exampleFormControlTextarea1" class="form-label"> Reciver Name</label>
+          <input type="text" class="form-control" id="Recname" placeholder="Enter Reciver name">
+        </div>
+
+      </div>
+
+    
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        <div class="mb-3">
+          <label for="exampleFormControlTextarea1" class="form-label"> Arrival time</label>
+          <input type="date" class="form-control" id="Recname" placeholder="Enter Reciver Name">
+        </div>
+      </div>
+      
+      <div class="col-6">
+        <div class="mb-3">
+          <label for="exampleFormControlTextarea1" class="form-label">Max Temperature</label>
+          <input type="number" class="form-control" id="maxTemp" placeholder="0">
+        </div>
+
+      </div>
+
+    
+    </div>
+
+
+    <div class="row">
+    
+      
+      <div class="col-12">
+        <div class="mb-3">
+        
+          <button type="submit" onclick="changeWord()" class="btn btn-primary mb-3">Save Contract</button>
+        </div>
+
+      </div>
+
+    
+    </div>
+
+
+    <!-- <div class="row">
+      <div>
+        <h3 class="sub-header">Get last information saved</h3>
+        <form class="form-inline" role="form">
+          <a href="#" onclick="registerGetInfo()" class="btn btn-primary">Get</a>
+          <div class="form-group">
+            <table>
+              <tr>
+                <td>Info:</td>
+                <td>
+                  <label id="lastInfo">
+                </td>
+              </tr>
+            </table>
+          </div>
+        </form>
+      </div>
+    </div> -->
+
+    <script>
+      //connectMetamask();
+      let account;
+      const connectMetamask = async () => {
+          if(window.ethereum !== "undefined"){
+              const accounts = await ethereum.request({method: "eth_requestAccounts"});
+              account = accounts[0];
+              document.getElementById("accountArea").innerHTML = `Account is: ${account}`;
+          }
+
+      }
+
+      const connectContract = async () => {
+          // const ABI = [
+          //     {
+          //         "inputs": [
+          //             {
+          //                 //"internalType": "string",
+          //                 "name": "_name",
+          //                 "type": "string"
+          //             }
+          //         ],
+          //         "name": "changeFlower",
+          //         "outputs": [],
+          //         "stateMutability": "nonpayable",
+          //         "type": "function"
+          //     },
+          //     {
+          //         "inputs": [],
+          //         "name": "getFlower",
+          //         "outputs": [
+          //             {
+          //                 "internalType": "string",
+          //                 "name": "",
+          //                 "type": "string"
+          //             }
+          //         ],
+                  
+          //         "stateMutability": "view",
+          //         "type": "function"
+          //     }
+              
+          // ];
+
+         const CONTACT_ABI =   [
+	{
+		"inputs": [],
+		"name": "getFlower",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "Name",
+				"type": "string"
+			},
+      {
+				"internalType": "string",
+				"name": "Receiver",
+				"type": "string"
+			},
+      {
+				"internalType": "uint",
+				"name": "temp",
+				"type": "uint"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+
+
+{
+  "inputs": [
+      {
+        "internalType": "string",
+        "name": "_Rec",
+        "type": "string"
+      },
+      // {
+      //   "internalType": "string",
+      //   "name": "_phone",
+      //   "type": "string"
+      // }
+    ],
+    "name": "changeFlower",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]
+
+
+          const Address = "0xE19CB238755A92cD79Cc042F0c8e00a8d671f707";
+          window.web3 = await new Web3(window.ethereum);
+          window.contract = await new window.web3.eth.Contract(CONTACT_ABI, Address);
+          document.getElementById("contractArea").innerHTML = "Connection Status: Success";
+      }
+
+      const readWord = async () => {
+          var data=[];
+          data = await window.contract.methods.getFlower().call();
+      
+          
+         alert(`Name: ${data[0]}, Receiver: ${data[1]}, Temp: ${data[2]}  `);
+          document.getElementById("dataArea").innerHTML = `Name: ${data[0]}, Receiver: \n ${data[1]}, \n Temp: ${data[2]}  `
+      }
+
+      const changeWord = async () => {
+          const Contractname = document.getElementById("Contractname").value;
+          const Reciver = document.getElementById("Recname").value;
+          const Temp = document.getElementById("maxTemp").value;
+          await window.contract.methods.changeFlower(Contractname).send({ from: account });
+      }
+  </script>
+
+  </body>
+</html>
+
