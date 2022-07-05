@@ -95,7 +95,7 @@
       <div class="col-6">
         <div class="mb-3">
           <label for="exampleFormControlTextarea1" class="form-label"> Arrival time</label>
-          <input type="date" class="form-control" id="Recname" placeholder="Enter Reciver Name">
+          <input type="text" class="form-control" id="AvDate" placeholder="Enter Reciver Name">
         </div>
       </div>
       
@@ -190,6 +190,38 @@
           // ];
 
          const CONTACT_ABI =   [
+
+         {
+                    "inputs": [
+                        {
+                            "internalType": "string",
+                            "name": "_name",
+                            "type": "string"
+                        },
+                         {
+                    "internalType": "string",
+                    "name": "_Rec",
+                    "type": "string"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "_temp",
+                    "type": "uint256"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "_arrivalDate",
+                    "type": "uint256"
+                  }
+                    ],
+                    "name": "changeFlower",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+
+
+
 	{
 		"inputs": [],
 		"name": "getFlower",
@@ -208,6 +240,11 @@
 				"internalType": "uint",
 				"name": "temp",
 				"type": "uint"
+			},
+      {
+				"internalType": "uint256",
+				"name": "Arrival",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -215,47 +252,50 @@
 	},
 
 
-{
-  "inputs": [
-      {
-        "internalType": "string",
-        "name": "_Rec",
-        "type": "string"
-      },
-      // {
-      //   "internalType": "string",
-      //   "name": "_phone",
-      //   "type": "string"
-      // }
-    ],
-    "name": "changeFlower",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  }
+// {
+//   "inputs": [
+//       {
+//         "internalType": "string",
+//         "name": "_name",
+//         "type": "string"
+//       },
+//       {
+//         "internalType": "string",
+//         "name": "_Rec",
+//         "type": "string"
+//       }
+//     ],
+//     "name": "changeFlower",
+//     "outputs": [],
+//     "stateMutability": "nonpayable",
+//     "type": "function"
+//   }
 ]
 
 
-          const Address = "0xE19CB238755A92cD79Cc042F0c8e00a8d671f707";
+      //Your Contract Address
+          const Address = "0xC91Fc5E1F083F8ca09106429335217807CF9C928";
           window.web3 = await new Web3(window.ethereum);
           window.contract = await new window.web3.eth.Contract(CONTACT_ABI, Address);
           document.getElementById("contractArea").innerHTML = "Connection Status: Success";
       }
 
       const readWord = async () => {
+        connectContract();
           var data=[];
           data = await window.contract.methods.getFlower().call();
       
           
-         alert(`Name: ${data[0]}, Receiver: ${data[1]}, Temp: ${data[2]}  `);
-          document.getElementById("dataArea").innerHTML = `Name: ${data[0]}, Receiver: \n ${data[1]}, \n Temp: ${data[2]}  `
+         alert(`Name: ${data[0]}, Receiver: ${data[1]}, Temp: ${data[2]}, arrival: ${data[3]} `);
+          document.getElementById("dataArea").innerHTML = `Name: ${data[0]}, Receiver: \n ${data[1]}, \n Temp: ${data[2]}, arrival: ${data[3]}  `
       }
 
       const changeWord = async () => {
           const Contractname = document.getElementById("Contractname").value;
           const Reciver = document.getElementById("Recname").value;
           const Temp = document.getElementById("maxTemp").value;
-          await window.contract.methods.changeFlower(Contractname).send({ from: account });
+          const ArrivalDate = document.getElementById("AvDate").value;
+          await window.contract.methods.changeFlower(Contractname,Reciver,Temp,ArrivalDate).send({ from: account });
       }
   </script>
 
